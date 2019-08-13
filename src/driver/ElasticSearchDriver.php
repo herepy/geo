@@ -40,7 +40,7 @@ class ElasticSearchDriver implements DriverInterface
         // TODO: Implement distanceFrom() method.
     }
 
-    public function radiusFrom(string $name, int $limit, string $unit = "m"): float
+    public function radiusFrom(string $name, int $limit=10, string $unit = "m"): float
     {
         // TODO: Implement radiusFrom() method.
     }
