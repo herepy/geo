@@ -40,7 +40,7 @@ class MongodbDriver extends BaseDriver
         // TODO: Implement distanceFrom() method.
     }
 
-    public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): float
+    public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): array
     {
         // TODO: Implement radiusFrom() method.
     }

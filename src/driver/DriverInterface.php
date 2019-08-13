@@ -71,8 +71,8 @@ interface DriverInterface
      * @param float $distance 距离半径
      * @param string $unit 距离单位 m|km
      * @param int $limit 返回数量
-     * @return float
+     * @return array
      */
-    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10):float ;
+    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10):array ;
 
 }
