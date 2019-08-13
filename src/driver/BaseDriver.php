@@ -22,7 +22,7 @@ class BaseDriver implements DriverInterface
 
     public function distanceFrom(string $name1, string $name2, string $unit = "m"): float{}
 
-    public function radiusFrom(string $name, int $limit=10, string $unit = "m"): float{}
+    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10): float{}
 
     protected function checkPoint(float $lon,float $lat):bool
     {

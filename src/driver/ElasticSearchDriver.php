@@ -8,7 +8,7 @@
 
 namespace Pengyu\Geo\Driver;
 
-class ElasticSearchDriver implements DriverInterface
+class ElasticSearchDriver extends BaseDriver
 {
     public function init(array $config)
     {
@@ -40,7 +40,7 @@ class ElasticSearchDriver implements DriverInterface
         // TODO: Implement distanceFrom() method.
     }
 
-    public function radiusFrom(string $name, int $limit=10, string $unit = "m"): float
+    public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): float
     {
         // TODO: Implement radiusFrom() method.
     }

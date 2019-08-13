@@ -68,10 +68,11 @@ interface DriverInterface
     /**
      * 坐标点周围的坐标点列表
      * @param string $name 中心坐标点名
-     * @param int $limit 返回数量
+     * @param float $distance 距离半径
      * @param string $unit 距离单位 m|km
+     * @param int $limit 返回数量
      * @return float
      */
-    public function radiusFrom(string $name,int $limit=10,string $unit="m"):float ;
+    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10):float ;
 
 }
