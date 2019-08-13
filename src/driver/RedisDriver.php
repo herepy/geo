@@ -37,7 +37,7 @@ class RedisDriver extends BaseDriver
             return false;
         }
 
-        $this->instance->geoAdd($this->key,$lon,$lat,$name);
+        $this->instance->rawCommand("GEOADD",$this->key,$lon,$lat,$name);
         return true;
     }
 
@@ -52,7 +52,7 @@ class RedisDriver extends BaseDriver
                 break;
             }
 
-            $this->instance->geoAdd($this->key,$item["lon"],$item["lat"],$item["name"]);
+            $this->instance->rawCommand("GEOADD",$this->key,$item["lon"],$item["lat"],$item["name"]);
         }
 
         if (!$flag) {
@@ -76,10 +76,10 @@ class RedisDriver extends BaseDriver
 
     public function distanceFrom(string $name1, string $name2, string $unit = "m"): float
     {
-        return $this->instance->geoDist($this->key,$name1,$name2,$unit);
+        return $this->instance->rawCommand("GEODIST",$this->key,$name1,$name2,$unit);
     }
 
-    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10): float
+    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10): array
     {
 
         return $this->instance->rawCommand("GEORADIUSBYMEMBER",$this->key,$name,$distance,$unit,"WITHDIST","COUNT",$limit);
