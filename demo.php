@@ -21,5 +21,8 @@ $config=[
 $client=GeoClient::build($config);
 $client->add("chengdu",104.07,30.67);
 $client->add("deyang",104.38,31.13);
+$client->add("mianyang",104.67,31.46);
 
-echo $client->distanceFrom("chengdu","deyang");
+
+echo $client->distanceFrom("chengdu","mianyang","km")."\n";
+var_dump($client->radiusFrom("chengdu",100,"km"));
