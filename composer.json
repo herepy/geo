@@ -1,0 +1,15 @@
+{
+    "name": "pengyu/geo",
+    "description": "php geo client",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "pengyu",
+            "email": "917103429@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    }
+}
