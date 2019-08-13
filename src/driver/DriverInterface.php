@@ -6,8 +6,12 @@
  * Time: 12:15
  */
 
+namespace Pengyu\Geo\Driver;
+
 interface DriverInterface
 {
+    public function init(array $config);
+
     public function add(string $name,float $lon,float $lat):bool ;
 
     public function bulk(array $points):bool ;

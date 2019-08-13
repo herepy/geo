@@ -6,8 +6,15 @@
  * Time: 13:03
  */
 
+namespace Pengyu\Geo\Driver;
+
 class RedisDriver implements DriverInterface
 {
+    public function init(array $config)
+    {
+
+    }
+
     public function add(string $name, float $lon, float $lat): bool
     {
         // TODO: Implement add() method.

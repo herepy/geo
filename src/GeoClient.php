@@ -6,6 +6,8 @@
  * Time: 12:14
  */
 
+namespace Pengyu\Geo;
+
 class GeoClient
 {
     protected $driver;
