@@ -8,46 +8,68 @@
 
 namespace Pengyu\Geo;
 
+
 class GeoClient
 {
     protected $driver;
 
-    protected $instance;
+    protected static $instance;
 
     protected function __construct(){}
 
-    public static function build()
+    protected static $availableDriver=[
+        "redis"         =>  "Pengyu\\Geo\\Driver\\RedisDriver",
+        "mongodb"       =>  "Pengyu\\Geo\\Driver\\MongodbDriver",
+        "elasticsearch" =>  "Pengyu\\Geo\\Driver\\ElasticSearchDriver"
+    ];
+
+    public static function build(array $config)
     {
 
+        if (self::$instance) {
+            return self::$instance;
+        }
+
+        self::$instance=new self();
+        if (!isset($config["driver"]) || !in_array($config["driver"],self::$availableDriver)) {
+            $driver=new (self::$availableDriver["redis"]);
+        } else {
+            $driver=new (self::$availableDriver[$config["driver"]]);
+        }
+
+        $driver->init($config);
+        self::$instance->driver=$driver;
+
+        return self::$instance;
     }
 
-    public function add()
+    public function add(string $name, float $lon, float $lat)
     {
-        // TODO: Implement add() method.
+        return $this->driver->add($name,$lon,$lat);
     }
 
-    public function bulk()
+    public function bulk(array $points)
     {
-        // TODO: Implement bulk() method.
+        return $this->driver->bulk($points);
     }
 
-    public function del()
+    public function del(string $name)
     {
-        // TODO: Implement del() method.
+        return $this->driver->del($name);
     }
 
     public function flush()
     {
-        // TODO: Implement flush() method.
+        return $this->driver->flush();
     }
 
-    public function distanceFrom()
+    public function distanceFrom(string $name1, string $name2, string $unit = "m")
     {
-        // TODO: Implement distanceFrom() method.
+        return $this->driver->distanceFrom($name1,$name2,$unit);
     }
 
-    public function radiusFrom()
+    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10)
     {
-        // TODO: Implement radiusFrom() method.
+        return $this->driver->radiusFrom($name,$distance,$unit,$limit);
     }
 }
