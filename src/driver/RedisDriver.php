@@ -74,12 +74,12 @@ class RedisDriver extends BaseDriver
         return $this->instance->del($this->key) ? true : false;
     }
 
-    public function distanceFrom(string $name1, string $name2, string $unit = DriverInterface::GEO_UNIT_KM): float
+    public function distanceFrom(string $name1, string $name2, string $unit = self::GEO_UNIT_KM): float
     {
         return $this->instance->rawCommand("GEODIST",$this->key,$name1,$name2,$unit);
     }
 
-    public function radiusFrom(string $name,float $distance,string $unit=DriverInterface::GEO_UNIT_KM,int $limit=10): array
+    public function radiusFrom(string $name,float $distance,string $unit=self::GEO_UNIT_KM,int $limit=10): array
     {
         $distance=abs($distance);
         return $this->instance->rawCommand("GEORADIUSBYMEMBER",$this->key,$name,$distance,$unit,"WITHDIST","COUNT",$limit);

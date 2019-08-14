@@ -69,7 +69,7 @@ interface DriverInterface
      * @param string $unit 距离单位 m|km
      * @return float
      */
-    public function distanceFrom(string $name1,string $name2,string $unit="m"):float ;
+    public function distanceFrom(string $name1,string $name2,string $unit=self::GEO_UNIT_KM):float ;
 
     /**
      * 坐标点周围的坐标点列表
@@ -79,6 +79,6 @@ interface DriverInterface
      * @param int $limit 返回数量
      * @return array
      */
-    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10):array ;
+    public function radiusFrom(string $name,float $distance,string $unit=self::GEO_UNIT_KM,int $limit=10):array ;
 
 }

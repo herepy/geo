@@ -28,4 +28,4 @@ $client->bulk([
     ["name"=>"test3","lon"=>105.36,"lat"=>30.28],
 ]);
 
-echo $client->distanceFrom("chengdu","mianyang",\Pengyu\Geo\Driver\DriverInterface::GEO_UNIT_KM);
+echo $client->distanceFrom("chengdu","deyang");

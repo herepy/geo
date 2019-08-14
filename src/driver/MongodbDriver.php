@@ -79,7 +79,7 @@ class MongodbDriver extends BaseDriver
         return true;
     }
 
-    public function distanceFrom(string $name1, string $name2, string $unit = "m"): float
+    public function distanceFrom(string $name1, string $name2, string $unit = self::GEO_UNIT_KM): float
     {
         $point=$this->collection->findOne(["name"=>$name1]);
         if (!$point) {
@@ -102,14 +102,14 @@ class MongodbDriver extends BaseDriver
         }
 
         $distence=$results["results"][0]["dis"];
-        if ($unit == "km") {
+        if ($unit == self::GEO_UNIT_KM) {
             $distence=$distence/1000;
         }
 
         return $distence;
     }
 
-    public function radiusFrom(string $name,float $distance, string $unit = DriverInterface::GEO_UNIT_KM, int $limit=10): array
+    public function radiusFrom(string $name,float $distance, string $unit = self::GEO_UNIT_KM, int $limit=10): array
     {
         $point=$this->collection->findOne(["name"=>$name]);
         if (!$point) {

@@ -20,9 +20,9 @@ class BaseDriver implements DriverInterface
 
     public function flush(): bool{}
 
-    public function distanceFrom(string $name1, string $name2, string $unit = "m"): float{}
+    public function distanceFrom(string $name1, string $name2, string $unit = self::GEO_UNIT_KM): float{}
 
-    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10): array {}
+    public function radiusFrom(string $name,float $distance,string $unit=self::GEO_UNIT_KM,int $limit=10): array {}
 
     protected function checkPoint(float $lon,float $lat):bool
     {

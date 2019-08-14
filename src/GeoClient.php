@@ -9,6 +9,8 @@
 namespace Pengyu\Geo;
 
 
+use Pengyu\Geo\Driver\DriverInterface;
+
 class GeoClient
 {
     protected $driver;
@@ -64,12 +66,12 @@ class GeoClient
         return $this->driver->flush();
     }
 
-    public function distanceFrom(string $name1, string $name2, string $unit = "m")
+    public function distanceFrom(string $name1, string $name2, string $unit = DriverInterface::GEO_UNIT_KM)
     {
         return $this->driver->distanceFrom($name1,$name2,$unit);
     }
 
-    public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10)
+    public function radiusFrom(string $name,float $distance,string $unit=DriverInterface::GEO_UNIT_KM,int $limit=10)
     {
         return $this->driver->radiusFrom($name,$distance,$unit,$limit);
     }

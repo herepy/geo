@@ -35,12 +35,12 @@ class ElasticSearchDriver extends BaseDriver
         // TODO: Implement flush() method.
     }
 
-    public function distanceFrom(string $name1, string $name2, string $unit = "m"): float
+    public function distanceFrom(string $name1, string $name2, string $unit = self::GEO_UNIT_KM): float
     {
         // TODO: Implement distanceFrom() method.
     }
 
-    public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): array
+    public function radiusFrom(string $name,float $distance, string $unit = self::GEO_UNIT_KM, int $limit=10): array
     {
         // TODO: Implement radiusFrom() method.
     }
