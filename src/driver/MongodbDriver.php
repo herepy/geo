@@ -82,7 +82,9 @@ class MongodbDriver extends BaseDriver
     public function distanceFrom(string $name1, string $name2, string $unit = "m"): float
     {
         $point=$this->collection->findOne(["name"=>$name1]);
-
+        if (!$point) {
+            return 0;
+        }
         $cursor=$this->db->command([
             'geoNear' => $this->collectionName,
             'near' => [
@@ -96,18 +98,25 @@ class MongodbDriver extends BaseDriver
         ]);
 
         $results = $cursor->toArray()[0];
-        $distence=$results["results"][0]["dis"];
+        if (count($results["results"]) == 0) {
+            return 0;
+        }
 
+        $distence=$results["results"][0]["dis"];
         if ($unit == "km") {
             $distence=$distence/1000;
         }
+
         return $distence;
     }
 
     public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): array
     {
         $point=$this->collection->findOne(["name"=>$name]);
-        $distance=$unit == "m" ? $distance : $distance*1000;
+        if (!$point) {
+            return [];
+        }
+        $distance=abs($unit == "m" ? $distance : $distance*1000);
 
         $cursor=$this->db->command([
             'geoNear' => $this->collectionName,
