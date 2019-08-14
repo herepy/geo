@@ -8,40 +8,126 @@
 
 namespace Pengyu\Geo\Driver;
 
+use MongoDB\Client;
+
 class MongodbDriver extends BaseDriver
 {
+    protected $db;
+    protected $collection;
+    protected $collectionName;
+
     public function init(array $config)
     {
+        $host=isset($config["host"]) ? $config["host"] : "127.0.0.1";
+        $port=isset($config["port"]) ? $config["port"] : "27017";
+        $uri="mongodb://".$host.":".$port;
+        $db=isset($config["db"]) ? $config["db"] : "geo_db";
+        $collection=isset($config["collection"]) ? $config["collection"] : "geo_collection";
 
+        $client=new Client($uri);
+        $this->db=$client->$db;
+        $this->collection=$this->db->$collection;
+        $this->collectionName=$collection;
     }
 
     public function add(string $name, float $lon, float $lat): bool
     {
-        // TODO: Implement add() method.
+        if (!$this->checkPoint($lon,$lat)) {
+            return false;
+        }
+
+        $document=[
+            "name"      =>  $name,
+            "location"  =>  [
+                "type"          =>  "Point",
+                "coordinates"   =>  [$lon,$lat]
+            ]
+        ];
+        $this->collection->insertOne($document);
+        return true;
     }
 
     public function bulk(array $points): bool
     {
-        // TODO: Implement bulk() method.
+        $documents=[];
+        foreach ($points as $item) {
+            if (!$this->checkPoint($item["lon"],$item["lat"])) {
+                return false;
+            }
+            $documents[]=[
+                "name"      =>  $item["name"],
+                "location"  =>  [
+                    "type"          =>  "Point",
+                    "coordinates"   =>  [$item["lon"],$item["lat"]]
+                ]
+            ];
+        }
+
+        $this->collection->insertMany($documents);
+        return true;
     }
 
     public function del(string $name): bool
     {
-        // TODO: Implement del() method.
+        $this->collection->deleteOne(["name"=>$name]);
+        return true;
     }
 
     public function flush(): bool
     {
-        // TODO: Implement flush() method.
+        $this->collection->drop();
+        return true;
     }
 
     public function distanceFrom(string $name1, string $name2, string $unit = "m"): float
     {
-        // TODO: Implement distanceFrom() method.
+        $point=$this->collection->findOne(["name"=>$name1]);
+
+        $cursor=$this->db->command([
+            'geoNear' => $this->collectionName,
+            'near' => [
+                'type' => 'Point',
+                'coordinates' => $point["location"],
+            ],
+            'spherical' => 'true',
+            'num' => 1,
+            'distanceField' =>  'dis',
+            'query' =>  ["name"=>$name2]
+        ]);
+
+        $results = $cursor->toArray()[0];
+        $distence=$results["results"][0]["dis"];
+
+        if ($unit == "km") {
+            $distence=$distence/1000;
+        }
+        return $distence;
     }
 
     public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): array
     {
-        // TODO: Implement radiusFrom() method.
+        $point=$this->collection->findOne(["name"=>$name]);
+
+        $cursor=$this->db->command([
+            'geoNear' => $this->collectionName,
+            'near' => [
+                'type' => 'Point',
+                'coordinates' => $point["location"],
+            ],
+            'spherical' => 'true',
+            'num' => $limit,
+            'distanceField' =>  'dis'
+        ]);
+
+        $results = $cursor->toArray()[0];
+        $results=$results["results"];
+
+        if ($unit == "km") {
+            foreach ($results as $index => $item) {
+                $results[$index]["dis"]=$item["dis"]/1000;
+            }
+        }
+
+        return $results;
     }
 }
