@@ -16,9 +16,15 @@ interface DriverInterface
     const GEO_LON_RANG=[-180,180];
 
     /**
-     * array 有效维度范围，越靠近极点越不准确，所有没有到90
+     * array 有效纬度范围，越靠近极点越不准确，所有没有到90
      */
     const GEO_LAT_RANG=[-85,85];
+
+    /**
+     * string 距离单位
+     */
+    const GEO_UNIT_KM="km";
+    const GEO_UNIT_M="m";
 
     /**
      * 初始化

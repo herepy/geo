@@ -109,13 +109,13 @@ class MongodbDriver extends BaseDriver
         return $distence;
     }
 
-    public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): array
+    public function radiusFrom(string $name,float $distance, string $unit = DriverInterface::GEO_UNIT_KM, int $limit=10): array
     {
         $point=$this->collection->findOne(["name"=>$name]);
         if (!$point) {
             return [];
         }
-        $distance=abs($unit == "m" ? $distance : $distance*1000);
+        $distance=abs($unit == DriverInterface::GEO_UNIT_M ? $distance : $distance*1000);
 
         $cursor=$this->db->command([
             'geoNear' => $this->collectionName,
@@ -135,7 +135,7 @@ class MongodbDriver extends BaseDriver
         foreach ($results as $item) {
             $info=[
                 $item["obj"]["name"],
-                $unit == "km" ? $item["dis"]/1000 : $item["dis"]
+                $unit == DriverInterface::GEO_UNIT_KM ? $item["dis"]/1000 : $item["dis"]
             ];
             $data[]=$info;
         }
