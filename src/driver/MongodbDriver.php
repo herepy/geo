@@ -75,7 +75,7 @@ class MongodbDriver extends BaseDriver
 
     public function flush(): bool
     {
-        $this->collection->drop();
+        $this->collection->deleteMany([]);
         return true;
     }
 
@@ -87,7 +87,7 @@ class MongodbDriver extends BaseDriver
             'geoNear' => $this->collectionName,
             'near' => [
                 'type' => 'Point',
-                'coordinates' => $point["location"],
+                'coordinates' => (array)$point["location"]["coordinates"],
             ],
             'spherical' => 'true',
             'num' => 1,
@@ -107,27 +107,35 @@ class MongodbDriver extends BaseDriver
     public function radiusFrom(string $name,float $distance, string $unit = "m", int $limit=10): array
     {
         $point=$this->collection->findOne(["name"=>$name]);
+        $distance=$unit == "m" ? $distance : $distance*1000;
 
         $cursor=$this->db->command([
             'geoNear' => $this->collectionName,
             'near' => [
                 'type' => 'Point',
-                'coordinates' => $point["location"],
+                'coordinates' => (array)$point["location"]["coordinates"],
             ],
             'spherical' => 'true',
             'num' => $limit,
-            'distanceField' =>  'dis'
+            'distanceField' =>  'dis',
+            'maxDistance'   =>  $distance
         ]);
 
         $results = $cursor->toArray()[0];
         $results=$results["results"];
 
-        if ($unit == "km") {
-            foreach ($results as $index => $item) {
-                $results[$index]["dis"]=$item["dis"]/1000;
+        $data=[];
+        foreach ($results as $item) {
+            $info=[
+                "distance"  =>  $item["dis"],
+                "object"    =>  (array)$item["obj"]
+            ];
+            if ($unit == "km") {
+                $info["distance"]=$info["distance"]/1000;
             }
+            $data[]=(array)$info;
         }
 
-        return $results;
+        return $data;
     }
 }
