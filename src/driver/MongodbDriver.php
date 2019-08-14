@@ -93,7 +93,6 @@ class MongodbDriver extends BaseDriver
             ],
             'spherical' => 'true',
             'num' => 1,
-            'distanceField' =>  'dis',
             'query' =>  ["name"=>$name2]
         ]);
 
@@ -126,7 +125,6 @@ class MongodbDriver extends BaseDriver
             ],
             'spherical' => 'true',
             'num' => $limit,
-            'distanceField' =>  'dis',
             'maxDistance'   =>  $distance
         ]);
 
@@ -136,13 +134,10 @@ class MongodbDriver extends BaseDriver
         $data=[];
         foreach ($results as $item) {
             $info=[
-                "distance"  =>  $item["dis"],
-                "object"    =>  (array)$item["obj"]
+                $item["obj"]["name"],
+                $unit == "km" ? $item["dis"]/1000 : $item["dis"]
             ];
-            if ($unit == "km") {
-                $info["distance"]=$info["distance"]/1000;
-            }
-            $data[]=(array)$info;
+            $data[]=$info;
         }
 
         return $data;
