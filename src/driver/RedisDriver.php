@@ -81,7 +81,7 @@ class RedisDriver extends BaseDriver
 
     public function radiusFrom(string $name,float $distance,string $unit="m",int $limit=10): array
     {
-
+        $distance=abs($distance);
         return $this->instance->rawCommand("GEORADIUSBYMEMBER",$this->key,$name,$distance,$unit,"WITHDIST","COUNT",$limit);
     }
 }
