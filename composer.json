@@ -1,6 +1,7 @@
 {
     "name": "pengyu/geo",
-    "description": "php geo client",
+    "description": "a php geo library",
+    "keywords": ["geo","geohash","lbs","distance","coordinates"],
     "type": "library",
     "license": "MIT",
     "authors": [
