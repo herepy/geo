@@ -31,7 +31,7 @@ class GeoClient
         }
 
         self::$instance=new self();
-        if (!isset($config["driver"]) || !in_array($config["driver"],self::$availableDriver)) {
+        if (!isset($config["driver"]) || !array_key_exists($config["driver"],self::$availableDriver)) {
             $driverName=self::$availableDriver["redis"];
         } else {
             $driverName=self::$availableDriver[$config["driver"]];
