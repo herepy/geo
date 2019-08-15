@@ -23,7 +23,7 @@ class ElasticSearchDriver extends BaseDriver
 
         $this->client=$client;
         $this->index=isset($config["index"]) ? $config["index"] : "geo_index";
-        $this->type=isset($config["type"]) ? $config["db"] : "geo_type";
+        $this->type=isset($config["type"]) ? $config["type"] : "geo_type";
     }
 
     public function add(string $name, float $lon, float $lat): bool
