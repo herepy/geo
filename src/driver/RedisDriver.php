@@ -82,6 +82,11 @@ class RedisDriver extends BaseDriver
     public function radiusFrom(string $name,float $distance,string $unit=self::GEO_UNIT_KM,int $limit=10): array
     {
         $distance=abs($distance);
-        return $this->instance->rawCommand("GEORADIUSBYMEMBER",$this->key,$name,$distance,$unit,"WITHDIST","COUNT",$limit);
+        $result=$this->instance->rawCommand("GEORADIUSBYMEMBER",$this->key,$name,$distance,$unit,"WITHDIST","COUNT",$limit);
+        if (isset($result[0]) && $result[0][0] == $name) {
+            unset($result[0]);
+        }
+
+        return $result;
     }
 }

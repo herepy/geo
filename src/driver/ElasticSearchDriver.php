@@ -211,6 +211,9 @@ class ElasticSearchDriver extends BaseDriver
 
         $data=[];
         foreach ($result["hits"]["hits"] as $item) {
+            if ($item["_source"]["name"] == $name) {
+                continue;
+            }
             $data[]=[
                 $item["_source"]["name"],
                 $item["sort"][0]
