@@ -6,6 +6,9 @@
 * 查找附近的点
 
 ### 安装
+##### 必要条件
+目前可使用驱动有：redis(默认)、mongodb、elasticsearch,驱动可通过参数配置切换，使用某个驱动时，必须安装对应的软件，比如：redis >= 3.2.0,mongodb >= 2.4等
+
 ##### git方式
 ```shell
     git clone https://github.com/herepy/geo.git
