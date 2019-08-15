@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=7.0",
-        "mongodb/mongodb": "^1.4"
+        "mongodb/mongodb": "^1.4",
+        "elasticsearch/elasticsearch": "^6.7"
     },
     "autoload": {
         "psr-4": {
