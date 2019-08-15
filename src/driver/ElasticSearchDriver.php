@@ -28,7 +28,7 @@ class ElasticSearchDriver extends BaseDriver
 
     public function add(string $name, float $lon, float $lat): bool
     {
-        if ($this->checkPoint($lon,$lat)) {
+        if (!$this->checkPoint($lon,$lat)) {
             return false;
         }
 
@@ -51,7 +51,7 @@ class ElasticSearchDriver extends BaseDriver
     {
         $params=[];
         foreach ($points as $item) {
-            if ($this->checkPoint($item["lon"],$item["lat"])) {
+            if (!$this->checkPoint($item["lon"],$item["lat"])) {
                 return false;
             }
 
@@ -151,7 +151,7 @@ class ElasticSearchDriver extends BaseDriver
         if (empty($result["hits"]["hits"])) {
             return 0;
         }
-        return $result["hits"]["hits"][0]["sort"];
+        return $result["hits"]["hits"][0]["sort"][0];
     }
 
     public function radiusFrom(string $name,float $distance, string $unit = self::GEO_UNIT_KM, int $limit=10): array
@@ -182,6 +182,7 @@ class ElasticSearchDriver extends BaseDriver
                         "filter"    =>  [
                             "geo_distance"  =>  [
                                 "distance"  =>  $distance,
+                                "unit"      =>  $unit,
                                 "location"  =>  [
                                     "lat"   =>  $point["location"]["lat"],
                                     "lon"   =>  $point["location"]["lon"]
@@ -202,6 +203,7 @@ class ElasticSearchDriver extends BaseDriver
                 "size"  => $limit
             ]
         ];
+//        echo json_encode($param2);exit;
         $result=$this->client->search($param2);
 
         if (empty($result["hits"]["hits"])) {
@@ -212,7 +214,7 @@ class ElasticSearchDriver extends BaseDriver
         foreach ($result["hits"]["hits"] as $item) {
             $data[]=[
                 $item["_source"]["name"],
-                $item["sort"]
+                $item["sort"][0]
             ];
         }
         return $data;
