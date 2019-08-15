@@ -203,7 +203,6 @@ class ElasticSearchDriver extends BaseDriver
                 "size"  => $limit
             ]
         ];
-//        echo json_encode($param2);exit;
         $result=$this->client->search($param2);
 
         if (empty($result["hits"]["hits"])) {
